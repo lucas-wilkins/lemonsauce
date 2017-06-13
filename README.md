@@ -17,19 +17,24 @@ Lemonsauce is a python 3 package for performing calculations involving colour so
 for arbitrary observers.
 
 Features
-========
+--------
 
 * Get the geometry for colour solids with any dimension
 * Plotting tools for matplotlib
 * Export tools compatible with 3D rendering tools such as blender.
+* Calculation of vividness
+* Implementation of related functions
+  * Pigment templates
+  * Extreme spectra
+  * Some human colourmetric functions
 
 Examples
 ========
 
-A number of full examples can be found in the examples directory.
+A number of full examples can be found in the `examples` directory.
 There is a dedicated README.md explaining them in that direction.
 
-But here is a basic example, displaying a colour solid:
+But here is a basic example, displaying a colour solid in 2D:
 
 ```python
 
@@ -46,12 +51,23 @@ solid = ColourSolid(example_fraction_yields[:, :2])
 solid.draw()
 ```
 
-Licence
-=======
+Licencing
+=========
 
 Lemonsauce is licenced under a Creative Commons
 [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 A copy of the licence is in the root folder in the file 'licence.txt'.
+
+This excludes the human colourmetric data in the files
+'cie64.txt' and 'd65.txt' which was obtained from the
+[UCL Opthalmology Lab](http://www.cvrl.org/).
+They give the following conditions for its use.
+
+> The information and data on this website are provided free of charge
+> as a service to the vision science community. They were believed to be
+> correct at the time of posting. Their use and any consequences arising
+> from their use are the sole responsibility of the user.
+
 
 Notes
 =====
