@@ -10,3 +10,5 @@
 # Temporary python files
 
 __pycache__/
+
+doc_example.py

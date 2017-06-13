@@ -340,7 +340,18 @@ class ColourSolid:
         else:
             raise Exception("Optimisation failed: %s"%opt_status_lookup[result.status])
 
-    def draw_on(self, projection=None, plt_obj=None, slices: bool=True, direction=(0, 0, 1), limit=True):
+    def draw(self, projection=None, slices: bool=True, direction=(0, 0, 1), limit=True):
+        """ Drawing process
+
+            Args:
+                projection: A two-by-n matrix that turns projects the points of the solid
+                slices: If the solid is 3D, show slices in the direction specified by the direction parameter
+                direction: direction perpendicular to which the solid will be slices
+        """
+
+        self.draw_on(plt_obj=None, projection=projection, slices=slices, direction=direction, limit=limit)
+
+    def draw_on(self, plt_obj=None, projection=None, slices: bool=True, direction=(0, 0, 1), limit=True):
         """ Drawing process
 
         Args:
