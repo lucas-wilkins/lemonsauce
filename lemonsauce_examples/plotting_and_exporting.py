@@ -4,7 +4,7 @@
 Colour Solid Rendering Example
 ==============================
 
-This shows examples of creating colour solids and ...
+This shows lemonsauce_examples of creating colour solids and ...
 
 * Plotting them using matplotlib
 * Outputting them to an obj file that can be opened in 3D applications
@@ -32,7 +32,7 @@ from lemonsauce import ColourSolid
 #
 #
 
-from examples.fractional_yields import example_fraction_yields
+from lemonsauce_examples.fractional_yields import example_fraction_yields
 
 #
 #

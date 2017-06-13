@@ -3,10 +3,10 @@ import warnings
 from numpy import array, zeros, ones, eye, any, concatenate, dot, arange, cross, interp, transpose, sum, sqrt
 from scipy.optimize import linprog
 from scipy.spatial import ConvexHull
-from solidtools.geom import implicit_line
-from solidtools.obj import write_obj
+from .geom import implicit_line
+from .obj import write_obj
 
-from lemonsauce.solidtools.slicer import slice_solid, get_edges
+from .slicer import slice_solid, get_edges
 
 # Maximum number of points that hull calculation can be called on without pausing/warning
 MAX_POINTS = 50

@@ -24,7 +24,7 @@ from lemonsauce import ColourSolid
 from lemonsauce import reflectance_to_rgb
 
 # We will use the example data
-from examples.fractional_yields import example_fraction_yields, wavelengths
+from lemonsauce_examples.fractional_yields import example_fraction_yields, wavelengths
 
 #
 # We do a two dimensional case for simplicity, we use entries 0 and 2 to better demonstrate

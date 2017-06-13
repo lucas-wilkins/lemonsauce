@@ -13,7 +13,7 @@ from lemonsauce import extreme_spectrum
 #
 # load the example fractional yields
 #
-from examples.fractional_yields import example_fraction_yields, wavelengths
+from lemonsauce_examples.fractional_yields import example_fraction_yields, wavelengths
 
 #
 # Create a trichromat colour solid

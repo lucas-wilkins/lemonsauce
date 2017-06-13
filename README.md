@@ -31,7 +31,7 @@ Features
 Examples
 ========
 
-A number of full examples can be found in the `examples` directory.
+A number of full examples can be found in the `lemonsauce_examples` directory.
 There is a dedicated README.md explaining them in that direction.
 
 But here is a basic example, displaying a colour solid in 2D:

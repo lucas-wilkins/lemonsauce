@@ -19,7 +19,7 @@ from lemonsauce import ColourSolid
 #
 # load the example fractional yields
 #
-from examples.fractional_yields import example_fraction_yields, wavelengths
+from lemonsauce_examples.fractional_yields import example_fraction_yields, wavelengths
 
 #
 # Create a dichromat colour solid to do calculations on (dichromats are easy to plot)
