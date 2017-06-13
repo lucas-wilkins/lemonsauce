@@ -1,0 +1,8 @@
+
+# IntelliJ / PyCharm project data
+
+.idea
+
+# OBJ output file
+
+*.obj
