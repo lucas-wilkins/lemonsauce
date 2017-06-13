@@ -4,7 +4,7 @@
 Colour Solid Rendering Example
 ==============================
 
-This shows examples of creating colour solids and
+This shows examples of creating colour solids and ...
 
 * Plotting them using matplotlib
 * Outputting them to an obj file that can be opened in 3D applications

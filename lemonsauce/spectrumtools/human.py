@@ -4,8 +4,7 @@ import os
 
 from numpy import array, interp, dot
 
-from lemonsauce.spectrumtools import d65
-
+from .cie_d65 import d65
 
 
 def make_safe(rgb_value):

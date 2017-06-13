@@ -2,7 +2,7 @@ import os
 
 from numpy import array, interp
 
-from lemonsauce.spectrumtools import normalise_spectral_density
+from .util import normalise_spectral_density
 
 # We cache the data from the file in this variable
 _d65_data = None
