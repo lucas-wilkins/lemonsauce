@@ -6,3 +6,7 @@
 # OBJ output file
 
 *.obj
+
+# Temporary python files
+
+__pycache__/
