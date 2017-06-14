@@ -13,8 +13,10 @@
 About
 =====
 
-Lemonsauce is a python 3 package for performing calculations involving colour solids
-for arbitrary observers.
+Lemonsauce is a python 3 package for performing calculations involving
+colour solids for arbitrary observers. This is being released in
+advanced of a forthcoming paper on animal colouration and colour
+perception.
 
 Features
 --------
@@ -28,13 +30,15 @@ Features
   * Extreme spectra
   * Some human colourmetric functions
 
+
 Examples
 ========
 
-A number of full examples can be found in the `lemonsauce_examples` directory.
-There is a dedicated README.md explaining them in that direction.
+The majority of features have examples.
+These can be found in the `lemonsauce_examples` directory.
+There is also a dedicated README.md explaining them there.
 
-But here is a basic example, displaying a colour solid in 2D:
+A simple example, however, is displaying a colour solid in 2D:
 
 ```python
 
