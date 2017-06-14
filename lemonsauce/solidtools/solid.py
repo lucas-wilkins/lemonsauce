@@ -3,7 +3,7 @@ import warnings
 from numpy import array, zeros, ones, eye, any, concatenate, dot, arange, cross, interp, transpose, sum, sqrt
 from scipy.optimize import linprog
 from scipy.spatial import ConvexHull
-from .geom import implicit_line
+from .geom import implicit_line, lower_simplex_order, remove_duplicates
 from .obj import write_obj
 
 from .slicer import slice_solid, get_edges
@@ -89,13 +89,16 @@ class ColourSolid:
     def points(self):
         """ The points of the colour solid geometry."""
 
-        hull = self._hull_data
+        if self.n_dims == 1:
+            return array([[0], [1]], dtype=float)
+
+        hull = self.hull_data
 
         return hull.points[hull.vertices, :]
 
     @property
-    def simplices(self):
-        """ Return indexes the "simplices" of the solid geometry.
+    def highest_dimension_simplices(self):
+        """ Return indexes the "simplices" of the solid geometry stored in the hull.
 
 
         In 2D this is the edges
@@ -108,7 +111,7 @@ class ColourSolid:
 
         """
 
-        hull = self._hull_data
+        hull = self.hull_data
 
         # The hull specifies simplex data in terms of its input points
         #  we want it in terms of its `vertices` field.
@@ -120,7 +123,84 @@ class ColourSolid:
 
         return points_to_verts[hull.simplices]
 
+    def simplices(self, dimension: int):
+        """ List of simplices of a given dimension representing the solid's edges/faces/cells/etc for
+        whatever dimension is specified.
 
+        Args:
+            dimension (int): dimension of the simplex required, 1: edges, 2: faces, 3: cells
+
+        Returns:
+            list of arrays of dimension+1 integers representing the solid's simplices of that dimension
+        """
+
+        return array(self._simplices(dimension))
+
+    def _simplices(self, dimension: int):
+        """ List of simplices of a given dimension representing the solid's edges/faces/cells/etc for
+        whatever dimension is specified.
+
+        Args:
+            dimension (int): dimension of the simplex required, 1: edges, 2: faces, 3: cells
+
+        Returns:
+            list of arrays of dimension+1 integers representing the solid's simplices of that dimension
+        """
+
+        # Negative dimensions make little sense
+        if dimension < -1:
+            raise ValueError("Dimensionality of simplices must be positive.")
+
+        # Negaive one dimension formally exists in some sense, but is empty
+        elif dimension == -1:
+            return [array([])]
+
+        # This is the vertex indices
+        elif dimension == 0:
+            return [array([i]) for i in range(len(self.points))]
+
+        # If it is equal to or more than the solid that's a problem.
+        elif dimension >= self.n_dims:
+            raise ValueError("This solid only has simplices of dimension < %i." % self.n_dims)
+
+        # Top level, get the simplices from the _hull_data object via highest_dimension_simplices
+        elif dimension == self.n_dims-1:
+            return list(self.highest_dimension_simplices)
+
+        # Lastly, if the dimension between that of the points and _hull_data's simplices
+        # return a reduced dimension version of the one above
+        else:
+            simplex_list = self._simplices(dimension + 1)
+            data = []
+            for simplex in simplex_list:
+                data += lower_simplex_order(simplex)
+
+            return remove_duplicates(data)
+
+    @property
+    def edges(self):
+        """ List of index pairs representing the solid's edges.
+
+        Returns:
+            list of arrays of two integers representing the solid's edges
+        """
+        return self.simplices(1)
+
+    @property
+    def faces(self):
+        """ List of index tripple representing the solid's faces.
+
+        Returns:
+            list of arrays of three integers representing the solid's edges"""
+        return self.simplices(2)
+
+    @property
+    def cells(self):
+        """ List of index quadruples representing the solid's cells.
+
+        Returns:
+            list of arrays of four integers representing the solid's edges"""
+        return self.simplices(3)
 
     @property
     def wavelengths(self):
@@ -212,7 +292,7 @@ class ColourSolid:
             # We use the fact that [0.5,0.5,0.5] is always in the middle
             centre = array([0.5, 0.5, 0.5])
             faces = []
-            for face in simplified_hull.simplices:
+            for face in simplified_hull.highest_dimension_simplices:
                 i1 = face[0]
                 i2 = face[1]
                 i3 = face[2]
@@ -439,7 +519,7 @@ class ColourSolid:
                     # project according to the matrix provided,
                     # and slice it in the z direction
 
-                    edges = array(get_edges(s.simplices))
+                    edges = array(get_edges(s.highest_dimension_simplices))
                     if slices:
                         print("Slicing 3-D solid...")
                         k = 0.05

@@ -48,6 +48,24 @@ Demonstrates:
 3) Exporting colour solids to .OBJ format
 4) Reading the geometry data from ColourSolid objects within python
 
+data_access.py
+--------------
+
+This illustrates how to get at the colour solid geometry within python.
+It introduces the following properties of the `ColorSolid`
+
+* `points`: the coordinates of the vertices making up the solid
+* `edges`: two column matrix of indices to points,
+representing the edges
+* `faces`: three column matrix of indices to points,
+representing the faces
+* `cells`: four column matrix of indices to points,
+representing the cells (the 4D equivilent of faces)
+* `simplices(n)`: n column matrix of indices to points,
+representing any level of simplices (n=1: edges, n=2 faces, etc,
+for any dimensionality)
+
+
 linear_programming_solid.py
 ---------------------------
 

@@ -34,6 +34,50 @@ def expand_simplex(simplex: array):
         return []
 
 
+# Key mapping used for removing duplicates
+# It means that all permutations are equivalent
+def simplex_duplicate_key(simplex: array):
+    return tuple(sorted(simplex))
+
+def remove_duplicates(simplex_list: list):
+    """ Remove duplicate simplicies from a list of indices
+
+    """
+
+    # if we can put the indices into canonical order, then we just have to sort
+    # We could use list(set()), but that would loose the ordering
+
+    s = sorted(simplex_list, key=simplex_duplicate_key)
+
+    out = [s[0]]
+    last_key = simplex_duplicate_key(s[0])
+
+    for entry in s:
+        this_key = simplex_duplicate_key(entry)
+        if this_key != last_key:
+            out.append(entry)
+            last_key = this_key
+
+    return out
+
+
+def lower_simplex_order(simplex: array):
+    """ Converts a n-simplex to its n+1 component (n-1)-simplices
+
+    For example, it will convert a tetrahedron (a 3-simplex) into 4 triangles (2-simplices)
+
+    Args:
+        simplex (array): an array containing n+1 references describing an n simplex
+    Returns:
+        a list of (n-1)-simplices described by length n arrays
+
+    """
+
+    # Simply skip each entry in turn
+    return [concatenate((simplex[:i], simplex[i+1:]))
+            for i in range(len(simplex))]
+
+
 def implicit_line(p: array, q: array):
     """ Get an implicit representation of line of the form Ax=b
 
