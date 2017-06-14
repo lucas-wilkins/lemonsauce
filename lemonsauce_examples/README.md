@@ -46,6 +46,7 @@ Demonstrates:
 1) Plotting options, such as slicing
 2) Plotting different projections of the solid
 3) Exporting colour solids to .OBJ format
+4) Reading the geometry data from ColourSolid objects within python
 
 linear_programming_solid.py
 ---------------------------

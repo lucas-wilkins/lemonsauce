@@ -85,6 +85,42 @@ class ColourSolid:
         # Make sure this is declared
         self._hull_data = None
 
+    @property
+    def points(self):
+        """ The points of the colour solid geometry."""
+
+        hull = self._hull_data
+
+        return hull.points[hull.vertices, :]
+
+    @property
+    def simplices(self):
+        """ Return indexes the "simplices" of the solid geometry.
+
+
+        In 2D this is the edges
+        In 3D this is the faces
+        In 4D this is the cells
+
+        ... etc ...
+
+        In 1D this is just an empty (zero-by-zero, array)
+
+        """
+
+        hull = self._hull_data
+
+        # The hull specifies simplex data in terms of its input points
+        #  we want it in terms of its `vertices` field.
+
+        # We have a map from vertex index to points, we need the other way round
+        points_to_verts =  zeros(len(hull.points), dtype=int)
+        for i in range(len(hull.vertices)):
+            points_to_verts[hull.vertices[i]] = i
+
+        return points_to_verts[hull.simplices]
+
+
 
     @property
     def wavelengths(self):

@@ -8,6 +8,7 @@ This shows lemonsauce_examples of creating colour solids and ...
 
 * Plotting them using matplotlib
 * Outputting them to an obj file that can be opened in 3D applications
+* Looking at the geometry data in raw form
 
 There are two different plots. The first one shows the default views of
 the colour solid, the dicromat solid has different kinds of slicing enabled
@@ -151,4 +152,28 @@ plt.show()
 s2.write_obj("test_solid_2d.obj")
 s3.write_obj("test_solid_3d.obj")
 
+#
+#
+#   Raw data example
+#
+#
 
+
+# Get points and faces of the 3D solid
+
+points = s3.points
+faces = s3.simplices
+
+# Let's just plot a 2D projection of the
+
+for face in faces:
+    # Get the x coordinates of the 3 face points
+    x = points[face, 0]
+
+    # Get the y coordinates of the 3 face points
+    y = points[face, 1]
+
+    # Draw a closed loop
+    plt.fill(x, y, fill=False)
+
+plt.show()
