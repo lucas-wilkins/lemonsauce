@@ -312,7 +312,7 @@ class ColourSolid:
             write_obj(verts, faces, filename)
 
         else:
-            raise ValueError("Only 2D and 3D solids can be writtoen to obj files.")
+            raise ValueError("Only 2D and 3D solids can be written to obj files.")
 
     def vividness(self, reflectance: array, wavelengths: array = None):
         """ Calculate the vividness of a given reflectance spectrum using this solid
@@ -561,7 +561,7 @@ class ColourSolid:
 
                             if slice.shape[0] > 1:
 
-                                solid2D = ConvexHull(slice[:, :2])
+                                solid2D = ConvexHull(dot(slice, projection))
                                 v = loop(solid2D.vertices)
                                 p = solid2D.points
 
@@ -569,7 +569,7 @@ class ColourSolid:
                                 plt.plot(p[v, 0], p[v, 1], 'k')
 
                     # main boundary
-                    solid2D = ConvexHull(s.points[:, :2])
+                    solid2D = ConvexHull(dot(s.points, projection))
                     v = loop(solid2D.vertices)
                     p = solid2D.points
 
