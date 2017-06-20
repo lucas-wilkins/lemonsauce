@@ -363,7 +363,7 @@ class ColourSolid:
                                  "avoid the interpolation attempt, do not specify them when"
                                  "calling Solid.vividness.")
 
-            #r = interp(wavelengths, self.wavelengths, reflectance)
+            # convert to this objects built in wavelengths
             r = interp(self.wavelengths, wavelengths, reflectance)
 
         # Use the checked/calculated reflectance value to calculate the fractional catches
