@@ -363,7 +363,8 @@ class ColourSolid:
                                  "avoid the interpolation attempt, do not specify them when"
                                  "calling Solid.vividness.")
 
-            r = interp(wavelengths, self.wavelengths, reflectance)
+            #r = interp(wavelengths, self.wavelengths, reflectance)
+            r = interp(self.wavelengths, wavelengths, reflectance)
 
         # Use the checked/calculated reflectance value to calculate the fractional catches
         catches = [dot(r, self.base_curves[:, i]) for i in range(self.n_dims)]
@@ -456,8 +457,31 @@ class ColourSolid:
         else:
             raise Exception("Optimisation failed: %s"%opt_status_lookup[result.status])
 
+    def draw_yields(self, plt_obj=None, scale: float=1.0):
+        """ Draw the colour solid on a matplotlib object (either given or created on the fly)
+
+        Args:
+            plt_obj (pyplot object): Draw on this, rather than creating a new one
+            scale (float): Scale the y axis
+
+        """
+
+        # If there is no plot object given, create one
+        if plt_obj is None:
+            import matplotlib.pyplot as plt
+        else:
+            plt = plt_obj
+
+        # Plot the curves
+        for i in range(self.n_dims):
+            plt.plot(self.wavelengths, scale*self.base_curves[:,i])
+
+        # If we created it, show it
+        if plt_obj is None:
+            plt.show()
+
     def draw(self, projection=None, slices: bool=True, direction=(0, 0, 1), limit=True):
-        """ Drawing process
+        """ Draw the colour solid on a matplotlib object (either given or created on the fly)
 
             Args:
                 projection: A two-by-n matrix that turns projects the points of the solid
@@ -468,7 +492,7 @@ class ColourSolid:
         self.draw_on(plt_obj=None, projection=projection, slices=slices, direction=direction, limit=limit)
 
     def draw_on(self, plt_obj=None, projection=None, slices: bool=True, direction=(0, 0, 1), limit=True):
-        """ Drawing process
+        """ Draw the colour solid on a matplotlib object (either given or created on the fly)
 
         Args:
             projection: A two-by-n matrix that turns projects the points of the solid
