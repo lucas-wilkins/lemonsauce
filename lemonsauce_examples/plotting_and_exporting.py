@@ -70,7 +70,7 @@ s2.draw_on(plt_obj=plt)
 plt.title("Dichromat")
 
 plt.subplot(2, 3, 3)
-s2.draw_on(plt_obj=plt, slices=False)
+s2.draw_on(plt_obj=plt, slice=False)
 plt.title("Trichromat - no slicing")
 
 

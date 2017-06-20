@@ -457,12 +457,15 @@ class ColourSolid:
         else:
             raise Exception("Optimisation failed: %s"%opt_status_lookup[result.status])
 
-    def draw_yields(self, plt_obj=None, scale: float=1.0):
+    def draw_yields(self, plt_obj=None, normalise=False, scale: float=1.0, colors: list=None):
         """ Draw the colour solid on a matplotlib object (either given or created on the fly)
 
         Args:
             plt_obj (pyplot object): Draw on this, rather than creating a new one
+            normalise (bool, str or function): False does nothing, True and "max" normalises to maximum,
+                "sum" normalises to sum. It is also possible to pass in functions of type list/array=>number
             scale (float): Scale the y axis
+            colors (list): List of colour specifications for each yield function
 
         """
 
@@ -472,32 +475,51 @@ class ColourSolid:
         else:
             plt = plt_obj
 
-        # Plot the curves
+        # normalisation options
+        if (normalise is False) or (normalise is None):
+            f = lambda x: 1.0
+        elif callable(normalise):
+            f = normalise
+        elif isinstance(normalise, str):
+            f = {"max": max, "sum": sum}[normalise]
+        else:
+            f = max
+
+        # apply normalisation
+        curves = self.base_curves.copy()
         for i in range(self.n_dims):
-            plt.plot(self.wavelengths, scale*self.base_curves[:,i])
+            curves[:, i] /= f(curves[:, i])
+
+        # Plot the curves
+        if colors is None:
+            for i in range(self.n_dims):
+                plt.plot(self.wavelengths, scale*curves[:, i])
+        else:
+            for i in range(self.n_dims):
+                plt.plot(self.wavelengths, scale*curves[:, i], color=colors[i])
 
         # If we created it, show it
         if plt_obj is None:
             plt.show()
 
-    def draw(self, projection=None, slices: bool=True, direction=(0, 0, 1), limit=True):
+    def draw(self, projection=None, slice: bool=True, direction=(0, 0, 1), limit=True):
         """ Draw the colour solid on a matplotlib object (either given or created on the fly)
 
             Args:
                 projection: A two-by-n matrix that turns projects the points of the solid
-                slices: If the solid is 3D, show slices in the direction specified by the direction parameter
+                slice: If the solid is 3D, show slices in the direction specified by the direction parameter
                 direction: direction perpendicular to which the solid will be slices
         """
 
-        self.draw_on(plt_obj=None, projection=projection, slices=slices, direction=direction, limit=limit)
+        self.draw_on(plt_obj=None, projection=projection, slice=slice, direction=direction, limit=limit)
 
-    def draw_on(self, plt_obj=None, projection=None, slices: bool=True, direction=(0, 0, 1), limit=True):
+    def draw_on(self, plt_obj=None, projection=None, slice: bool=True, direction=(0, 0, 1), limit=True):
         """ Draw the colour solid on a matplotlib object (either given or created on the fly)
 
         Args:
             projection: A two-by-n matrix that turns projects the points of the solid
             plt_obj: A matplotlib plot object on which to call .plot, if None, we make our own then call show at the end
-            slices: If the solid is 3D, show slices in the direction specified by the direction parameter
+            slice: If the solid is 3D, show slices in the direction specified by the direction parameter
             direction: direction perpendicular to which the solid will be slices
             """
 
@@ -552,7 +574,7 @@ class ColourSolid:
                     # and slice it in the z direction
 
                     edges = array(get_edges(s.simplices))
-                    if slices:
+                    if slice:
                         print("Slicing 3-D solid...")
                         k = 0.05
                         for z in arange(k/2.0, 1.0, k):
