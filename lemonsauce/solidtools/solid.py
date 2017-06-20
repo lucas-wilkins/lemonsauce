@@ -292,7 +292,7 @@ class ColourSolid:
             # We use the fact that [0.5,0.5,0.5] is always in the middle
             centre = array([0.5, 0.5, 0.5])
             faces = []
-            for face in simplified_hull.highest_dimension_simplices:
+            for face in simplified_hull.simplices:
                 i1 = face[0]
                 i2 = face[1]
                 i3 = face[2]
@@ -517,22 +517,30 @@ class ColourSolid:
 
         else:
 
+            if projection is None:
+                projection = zeros((self.n_dims, 2), dtype=float)
+                projection[0, 0] = 1.0
+                projection[1, 1] = 1.0
+            else:
+
+                projection = array(projection)
+
+                if (projection.shape[0] != self.n_dims) or (projection.shape[1] != 2):
+                    raise ValueError("Projection should be an n-by-2 matrix")
+
+
+
             s = self.hull_data
             v = s.vertices
 
             if self.n_dims == 2:
 
                 # No projection needed, just show the outside
-                p = s.points
+                p = dot(s.points, projection)
                 v = loop(v)
                 plt.plot(p[v, 0], p[v, 1], 'k')
 
             else:
-
-                if projection is None:
-                    projection = zeros((self.n_dims, 2), dtype=float)
-                    projection[0, 0] = 1.0
-                    projection[1, 1] = 1.0
 
                 if self.n_dims == 3:
 
@@ -543,7 +551,7 @@ class ColourSolid:
                     # project according to the matrix provided,
                     # and slice it in the z direction
 
-                    edges = array(get_edges(s.highest_dimension_simplices))
+                    edges = array(get_edges(s.simplices))
                     if slices:
                         print("Slicing 3-D solid...")
                         k = 0.05
